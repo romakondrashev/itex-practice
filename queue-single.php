@@ -1,13 +1,15 @@
-<?php require 'header.php'; ?>
+<?php require 'common/header.php'; ?>
 <?php 
+
+// Получение ID автора очереди
 $sqlSelect = $dbh->query("SELECT * FROM `queues` WHERE `ID` = ".$_GET['queue']);
 $row = $sqlSelect->fetch(PDO::FETCH_ASSOC);
 $author_sql = $dbh->query("SELECT `name` FROM `users` WHERE `ID` = ".$row['author_FID']);
 
 
-// Check if current user exist
+// Проверка на наличие текущего пользователя в очереди
 $sqlCount = $dbh->prepare("SELECT COUNT(*) FROM `queue_user` WHERE `FID_queue` = ? AND `FID_user` = ?");
-$sqlCount->execute(array($_GET['queue'],'4'));
+$sqlCount->execute(array($_GET['queue'],$current_user['ID']));
 
 $user_exist = $sqlCount->fetch()['COUNT(*)'];
 ?>
@@ -87,12 +89,20 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 				'queue' : '<?php echo $_GET['queue']; ?>'
 			},
 			url: 'backend/queue-awaiting-users.php',
+			beforeSend: function(){
+				$('#card-single-wrapper').html('<p class="text-center">Загрузка данных...</p>');
+				$('#queue_button').hide();
+			},
 			success: function(data) {
 				var output = '';
 				for (var i = 0; i < data.length; i++) {
 					output += '<div class="card bg-light text-dark my-4"><div class="card-body awaiting-user-info text-center">';
 
-					output += '<span>'+data[i]['curse']+' курс</span>';
+					if (data[i]['curse'] !== '0' && data[i]['curse'] !== '') {
+						output += '<span>'+data[i]['curse']+' курс</span>';
+					} else {
+						output += '<span></span>';
+					}
 					output += '<span>'+data[i]['name']+'</span>';
 					output += '<span>'+data[i]['from_group']+'</span>';
 
@@ -103,6 +113,7 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 
 
 				$('#card-single-wrapper').html(output);
+				$('#queue_button').show();
 			}
 
 		})
@@ -112,7 +123,7 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 			type: 'POST',
 			data: {
 				'queue' : '<?php echo $_GET['queue']; ?>',
-				'user'	: '4'
+				'user'	: '<?php echo $current_user['ID']; ?>'
 			},
 			url: 'backend/toggle-queue-user.php',
 			success: function(data) {
@@ -140,4 +151,4 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 	};
 </script>
 
-<?php require 'footer.php'; ?>
+<?php require 'common/footer.php'; ?>

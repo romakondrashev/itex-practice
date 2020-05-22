@@ -2,6 +2,8 @@
 require '../connection.php';
 
 
+sleep(2);
+
 $sqlSelect = $dbh->prepare("SELECT * FROM `queue_user` WHERE `FID_queue` = ?");
 $sqlSelect->execute(array($_POST['queue']));
 
