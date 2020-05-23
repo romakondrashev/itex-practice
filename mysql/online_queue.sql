@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 22 2020 г., 05:46
+-- Время создания: Май 23 2020 г., 04:36
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.4.4
 
@@ -42,8 +42,8 @@ CREATE TABLE `queues` (
 --
 
 INSERT INTO `queues` (`ID`, `author_FID`, `title`, `description`, `discipline`, `place`, `date`) VALUES
-(2, 1, 'Лабораторные работы', 'Сдача лабораторных работ по теме: \"AJAX запросы\"', 'ИТЕХ', '39з', '2020-05-19 21:00:00'),
-(3, 2, 'Практические занятия', 'Сдача ИДЗ по 2-му модулю', 'ИПЗ', '37з', '2020-05-20 21:00:00');
+(3, 2, 'Практические занятия', 'Сдача ИДЗ по 2-му модулю', 'ИПЗ', '37з', '2020-05-20 21:00:00'),
+(5, 1, 'Лабораторные работы', 'Проведение Консультации', 'ITEX', '108i', '2020-05-30 21:00:00');
 
 -- --------------------------------------------------------
 
@@ -62,10 +62,8 @@ CREATE TABLE `queue_user` (
 --
 
 INSERT INTO `queue_user` (`ID`, `FID_queue`, `FID_user`) VALUES
-(2, 2, 3),
 (14, 3, 4),
-(17, 3, 1),
-(18, 2, 1);
+(23, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -126,13 +124,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `queues`
 --
 ALTER TABLE `queues`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `queue_user`
 --
 ALTER TABLE `queue_user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
