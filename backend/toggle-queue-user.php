@@ -12,8 +12,8 @@ if ($user_exist === '0') {
 	$sqlSelect->execute(array($_POST['queue'],$_POST['user']));
 	echo 1;
 } else {
-	$sqlSelect = $dbh->prepare("DELETE FROM `queue_user` WHERE `FID_user` = ?");
-	$sqlSelect->execute(array($_POST['user']));
+	$sqlSelect = $dbh->prepare("DELETE FROM `queue_user` WHERE `FID_user` = ? AND `FID_queue` = ?");
+	$sqlSelect->execute(array($_POST['user'],$_POST['queue']));
 	echo -1;
 }
 

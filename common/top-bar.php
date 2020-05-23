@@ -9,7 +9,11 @@
                 <i class="fas fa-user fa-fw"></i>
                 <span style="margin: 0 5px;"><?php echo $current_user['name']; ?></span>
             </a>
+            
+            
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <a data-fancybox href="javascript:;" data-src="#add_queue_modal" rel="nofollow" class="dropdown-item modalbox" onclick="clicked_new_queue_button();">Добавить очередь</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="logout.php">Выйти</a>
             </div>
         </li>

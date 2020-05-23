@@ -10,8 +10,18 @@
                 </a>
                 <a class="nav-link" href="<?php echo $home_url; ?>/queue-list.php"
                     >
-                    <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                     Список всех очередей
+                </a>
+                <a class="nav-link" href="<?php echo $home_url; ?>/my-queues-list.php"
+                    >
+                    <div class="sb-nav-link-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    Мои очереди
+                </a>
+                 <a class="nav-link" href="<?php echo $home_url; ?>/my-awaiting-queues-list.php"
+                    >
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
+                    Ожидание в очереди
                 </a>
             </div>
         </div>

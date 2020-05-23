@@ -11,9 +11,14 @@
     <link href="<?php echo $home_url; ?>/assets/css/styles.css" rel="stylesheet" />
     <link href="<?php echo $home_url; ?>/assets/css/main.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $home_url; ?>/assets/js/vendor/fancybox/jquery.fancybox.min.css">
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
     <script src="<?php echo $home_url; ?>/assets/js/vendor/jquery-3.4.1.min.js"></script>
     <script src="<?php echo $home_url; ?>/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <!--подкючаем fancybox-->
+    <script type="text/javascript" src="<?php echo $home_url; ?>/assets/js/vendor/fancybox/jquery.fancybox.min.js"></script>
     <script src="<?php echo $home_url; ?>/assets/js/scripts.js"></script>
 </head>
 <body class="sb-nav-fixed">

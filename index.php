@@ -15,7 +15,10 @@
                 </h2>
             </div>
             <div class="row">
-                <?php require 'backend/get-queue-cards/home-my-queues.php'; ?>
+                <?php 
+                    $limit = 6;
+                    require 'backend/get-queue-cards/my-queues.php'; 
+                ?>
             </div>
         </div>   
 
@@ -24,11 +27,14 @@
         <div class="queue_wrapper">
             <div class="mb-3">
                 <h2 class="queue_title ">
-                    <i class="fas fa-user-clock"></i>Ожидание в очереди
+                    <i class="fas fa-user-clock mr-2"></i>Ожидание в очереди
                 </h2>
             </div>
             <div class="row">
-                <?php require 'backend/get-queue-cards/home-awaiting-queues.php'; ?>
+                <?php 
+                    $limit = 6;
+                    require 'backend/get-queue-cards/awaiting-queues.php'; 
+                ?>
             </div>
         </div>  
         

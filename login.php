@@ -94,7 +94,6 @@
                         $('#messages').html('<div class="alert alert-danger" role="alert">'+data.message+'</div>');
                     }
                     $('#login_form [type="submit"]').removeAttr('disabled').val('Авторизоваться');
-                    console.log(data);
                 }
             })
         })
