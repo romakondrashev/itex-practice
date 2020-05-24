@@ -1,4 +1,5 @@
-<?php 	 require 'connection.php'; 
+<?php 	 
+require 'connection.php'; 
 function clean($value = "") {
 	$value = trim($value);
 	$value = stripslashes($value);
@@ -24,11 +25,9 @@ $author_sql = $dbh->query("SELECT `ID`,`name` FROM `users` WHERE `ID` = ".$row['
 $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 
 // Проверка на наличие текущего пользователя в очереди
-$sqlCount = $dbh->prepare("SELECT COUNT(*) FROM `queue_user` WHERE `FID_queue` = ? AND `FID_user` = ?");
+$sqlCount = $dbh->prepare("SELECT * FROM `queue_user` WHERE `FID_queue` = ? AND `FID_user` = ?");
 $sqlCount->execute(array($_GET['queue'],$current_user['ID']));
-
-$user_exist = $sqlCount->fetch()['COUNT(*)'];
-
+$user_exist = $sqlCount->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <main>
@@ -48,70 +47,109 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 			<li class="breadcrumb-item active">Очередь на приём работ по <?php echo $row['discipline']; ?></li>
 		</ol>
 		<div class="row">
-			<div class="col-md-12 d-flex justify-content-end">
-				
-				<?php if ($author["ID"] === $current_user["ID"]): ?>
-					<div class="actions"  style="z-index: 2" >
+			<div class="col-md-12 mb-3 d-flex justify-content-end">
+				<div class="actions"  style="z-index: 2" >
+					<button class="btn btn-info" onclick="get_queue_users()" title="Обновить"><i class="fas fa-sync-alt"></i></button>
+					<?php if ($author["ID"] === $current_user["ID"]): ?>
+
 						<button data-fancybox href="#" data-src="#add_queue_modal" title="Отредактировать очередь" class="btn btn-primary" onclick="open_form_edit('<?php echo $row['ID']; ?>');">
 							<i class="fas fa-edit"></i>
 						</button>
-						<button href="#" title="Обновить список ожидающих" class="btn btn-warning" onclick="reload_queue('<?php echo $row['ID']; ?>');">
-							<i class="fas fa-sync-alt"></i> 
+						<button href="#" title="Очистить список ожидающих" class="btn btn-warning" onclick="reload_queue('<?php echo $row['ID']; ?>');">
+							<i class="fas fa-user-slash"></i>
 						</button>
+						<?php if ($row['is_active']==='1'): ?>
+							<button href="#" title="Приостановить очередь" class="btn btn-danger" onclick="if(confirm('Вы, действительно, хотите отключить очередь?'))toggle_activation_queue('<?php echo $row['ID']; ?>');">
+								<i class="fas fa-ban"></i>
+							</button>
+						<?php elseif($row['is_active']==='0'): ?>
+							<button href="#" title="Возобновить очередь" class="btn btn-success" onclick="if(confirm('Вы, действительно, хотите Включить очередь?'))toggle_activation_queue('<?php echo $row['ID']; ?>');">
+								<i class="fas fa-check"></i>
+							</button>
+						<?php endif ?>
 						<button href="#" title="Удалить очередь" class="btn btn-danger" onclick="remove_queue('<?php echo $row['ID']; ?>');">
 							<i class="fas fa-trash-alt"></i>
 						</button>
-					</div>
-				<?php endif ?>
+					<?php endif ?>
+				</div>
 			</div>
 		</div>
+		
 		<div class="row">
 			
-			<div class="col-xl-4 col-md-6 mx-auto">
-				<div class="card bg-light text-dark mb-4">
-					<div class="card-body">
-						<div class="card-body-item">
-							<p>Название:</p>
-							<p><?php echo $row['title']; ?></p>
+			<div class="nav flex-column nav-pills col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				<a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Текущие участники</a>
+				<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Прошли очередь</a>
+				<a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Покинули очередь</a>
+				
+			</div>
+			<div class="tab-content col-xl-6 col-md-6 col-sm-12 mx-auto" id="v-pills-tabContent">
+				<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+					<h2 class="text-center awaiting-users-title">Список ожидающих</h2>
+					
+
+					<div id="awaiting-users-wrapp"><!-- Inserting queue students --></div>
+
+					
+					<?php if (empty($user_exist) || $user_exist['queue_status'] !== '2'): ?>
+
+
+						<?php if (!empty($user_exist) && $user_exist['queue_status'] === '1' ): ?>
+							<button <?php echo $row['is_active'] === '0' ? 'data-not-active-queue' : ''; ?> id="queue_button" type="button" class="btn btn-block btn-danger my-4 w-auto mx-auto d-block" style="padding: 10px">
+								Выйти из очереди
+							</button>
+							<?php elseif (empty($user_exist) && $row['is_active'] !== '0' || $user_exist['queue_status'] === '0' && $row['is_active'] !== '0'): ?>
+								<button id="queue_button" type="button" class="btn btn-block btn-success my-4 w-auto mx-auto d-block" style="padding: 10px">
+									Встать в очередь
+								</button>
+							<?php endif; ?>
+						<?php endif ?>
+					</div>
+					<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+						<h2 class="text-center awaiting-users-title">Успешно прошли очередь</h2>
+						<div id="success-users-wrapp"><!-- Inserting queue students --></div>
+					</div>
+					<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+						<h2 class="text-center awaiting-users-title">Покинули очередь</h2>
+						<div id="abort-users-wrapp"><!-- Inserting queue students --></div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-md-6 mx-auto">
+					<div class="card bg-light text-dark mb-4">
+						<div class="card-body">
+							<div class="card-body-item">
+								<p>Название:</p>
+								<p><?php echo $row['title']; ?></p>
+							</div>
+
+							<div class="card-body-item">
+								<p>Дисциплина:</p>
+								<p><?php echo $row['discipline']; ?></p>
+							</div>
+							<div class="card-body-item">
+								<p>Преподаватель:</p>
+								<p><?php echo $author['name']; ?></p>
+							</div>
+							<div class="card-body-item">
+								<p>Дата:</p>
+								<p><?php echo date( "d.m.Y", strtotime($row['date'])); ?></p>
+							</div>
+							<div class="card-body-item">
+								<p>Место:</p>
+								<p><?php echo $row['place']; ?></p>
+							</div>
+							<div class="card-body-item">
+								<p>Статус очереди:</p>
+								<?php echo $row['is_active'] === '1' ? '<p class="text-success">Активна</p>' : '<p class="text-danger">Не активна</p>' ?>
+							</div>
+							
+							<hr class="mt-0">
+							<p class="mb-0"><?php echo $row['description']; ?></p>
 						</div>
 
-						<div class="card-body-item">
-							<p>Дисциплина:</p>
-							<p><?php echo $row['discipline']; ?></p>
-						</div>
-						<div class="card-body-item">
-							<p>Преподаватель:</p>
-							<p><?php echo $author['name']; ?></p>
-						</div>
-						<div class="card-body-item">
-							<p>Дата:</p>
-							<p><?php echo date( "d.m.Y", strtotime($row['date'])); ?></p>
-						</div>
-						<div class="card-body-item">
-							<p>Место:</p>
-							<p><?php echo $row['place']; ?></p>
-						</div>
-						<hr>
-						<p><?php echo $row['description']; ?></p>
 					</div>
-					
 				</div>
-			</div>
-			
-		</div>
-		<div class="row">
-			<div class="col-xl-4 col-md-6 col-sm-12 mx-auto">
-				<h2 class="text-center awaiting-users-title">Список ожидающих</h2>
-				<button class="btn btn-primary" onclick="get_awaiting_users()"><i class="fas fa-sync-alt"></i></button>
-				<div id="card-single-wrapper">
-					
-				</div>
-				<?php if ($user_exist): ?>
-					<button id="queue_button" type="button" class="btn  btn-block btn-outline-danger my-4" style="padding: 10px">Выйти из очереди</button>
-					<?php else: ?>
-						<button id="queue_button" type="button" class="btn  btn-block btn-outline-success my-4" style="padding: 10px">Встать в очередь</button>
-					<?php endif; ?>
-				</div>
+
 			</div>
 		</div>
 	</main>
@@ -119,75 +157,130 @@ $user_exist = $sqlCount->fetch()['COUNT(*)'];
 
 
 	<script>
+		function get_user_card (user_info, classes = '', arrow = 'up') {
+			let current_user_text = '';
+			let output = '';
 
+			if (user_info['current_user'] === 1 ) {
+				classes = 'border border-primary';
+				current_user_text = '(я) ';
+			} 
 
-		function get_awaiting_users () {
+			<?php if ($author["ID"] === $current_user["ID"]): ?>
+				output += '<a onclick="edit_user_click('+user_info['ID']+', \' '+user_info['name']+'\');" data-fancybox href="javascript:;" data-src="#edit_user_modal"  class="modalbox">';
+			<?php endif; ?>
+
+				output += '<div class="card bg-light text-dark '+classes+'"><div class="card-body awaiting-user-info text-center">';
+
+				if (user_info['curse'] !== '0' && user_info['curse'] !== '') {
+					output += '<span>'+user_info['curse']+' курс</span>';
+				} else {
+					output += '<span></span>';
+				}
+				output += '<span>'+current_user_text + user_info['name']+'</span>';
+				output += '<span>'+user_info['from_group']+'</span>';
+
+				output +='</div>';
+
+				if (user_info['note'] !== '') 
+					output += '<hr class="mt-0"><p class="col-md-12"><b>Комментарий преподавателя:</b> '+user_info['note']+'</p>';
+
+				output += '</div>';
+
+			<?php if ($author["ID"] === $current_user["ID"]): ?>
+				output += '</a>';
+			<?php endif; ?>
+
+			output += '<div class="text-center my-2 "><i class="fas fa-chevron-'+arrow+'"></i></div>';
+
+			return output;
+		}
+
+		function get_queue_users () {
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				data: {
 					'queue' : '<?php echo $_GET['queue']; ?>'
 				},
-				url: 'backend/queue-awaiting-users.php',
+				url: 'backend/queue-users/queue-users.php',
 				beforeSend: function(){
-					$('#card-single-wrapper').html('<p class="text-center">Загрузка данных...</p>');
+					$('#awaiting-users-wrapp, #success-users-wrapp, #abort-users-wrapp').html('<p class="text-center">Загрузка данных...</p>');
 					$('#queue_button').hide();
 				},
 				success: function(data) {
-					var output = '';
-					for (var i = 0; i < data.length; i++) {
-						output += '<div class="card bg-light text-dark my-4"><div class="card-body awaiting-user-info text-center">';
-
-						if (data[i]['curse'] !== '0' && data[i]['curse'] !== '') {
-							output += '<span>'+data[i]['curse']+' курс</span>';
-						} else {
-							output += '<span></span>';
+					
+					let output = '';
+					// awaiting users
+					if (data['awaiting']) {
+						for (var i = 0; i < data['awaiting'].length; i++) {
+							output += get_user_card(data['awaiting'][i]);
 						}
-						output += '<span>'+data[i]['name']+'</span>';
-						output += '<span>'+data[i]['from_group']+'</span>';
-
-						output +='</div></div>';
-
-						output += '<div class="text-center"><i class="fas fa-chevron-up"></i></div>';
+					} else {
+						output = '<p class="text-center">Список пуст.</p>';
 					}
-
-
-					$('#card-single-wrapper').html(output);
+					$('#awaiting-users-wrapp').html(output);
 					$('#queue_button').show();
-				}
 
+
+					output = '';
+					// success users
+					if (data['success']) {
+						for (var i = data['success'].length-1; i >= 0; i--) {
+							output += get_user_card(data['success'][i], 'border border-success', 'down');
+						}
+					} else {
+						output = '<p class="text-center">Список пуст.</p>';
+					}
+					$('#success-users-wrapp').html(output);
+
+
+					output = '';
+					// success users
+					if (data['abort']) {
+						for (var i = data['abort'].length-1; i >= 0; i--) {
+							output += get_user_card(data['abort'][i], 'border border-danger', 'down');
+						}
+					} else {
+						output = '<p class="text-center">Список пуст.</p>';
+					}
+					$('#abort-users-wrapp').html(output);
+
+				}
 			})
 		}
-		function toggle_queue_stand(){
+		function toggle_queue_stand(button){
 			$.ajax({
 				type: 'POST',
 				data: {
-					'queue' : '<?php echo $_GET['queue']; ?>',
-					'user'	: '<?php echo $current_user['ID']; ?>'
+					'queue' : '<?php echo $_GET['queue']; ?>'
 				},
-				url: 'backend/toggle-queue-user.php',
+				url: 'backend/queue-users/toggle-user-status.php',
 				success: function(data) {
-					if (data === '1') {
-						$('#queue_button').toggleClass('btn-outline-success').toggleClass('btn-outline-danger');
-						$('#queue_button').text('Выйти из очереди');
-					} else {
-						$('#queue_button').toggleClass('btn-outline-success').toggleClass('btn-outline-danger');
-						$('#queue_button').text('Встать в очередь');
+					if (data === '1' || data === '2') {
+						$(button).text('Выйти из очереди');
+					} else if(data === '0') {
+						$(button).text('Встать в очередь');
 					}
-					get_awaiting_users();
+					$(button).toggleClass('btn-success').toggleClass('btn-danger');
+					get_queue_users();
+
 				}
 
 			})
 		}
 		window.onload = function() {
-			get_awaiting_users();
+			get_queue_users();
 
 
 			$('#queue_button').on('click', function(){
 				if (confirm('Уверены?')) {
-					toggle_queue_stand();
+					toggle_queue_stand(this);
+					$('[data-not-active-queue]').remove();
 				}
 			})
+
+			setInterval(()=>get_queue_users(), 10000);
 		};
 	</script>
 
