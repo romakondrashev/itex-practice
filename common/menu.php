@@ -21,7 +21,7 @@
                  <a class="nav-link" href="<?php echo $home_url; ?>/my-awaiting-queues-list.php"
                     >
                     <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
-                    Ожидание в очереди
+                    Участие в очереди
                 </a>
             </div>
         </div>

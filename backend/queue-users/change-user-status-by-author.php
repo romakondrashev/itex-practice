@@ -48,26 +48,48 @@ if(isset($_POST['submit']))
 
             // Проверка на владельца очереди
 		if ($sqlSelect->fetch(PDO::FETCH_ASSOC)['author_FID'] === $current_user['ID']) {
-			$sqlSelect = $dbh->prepare("UPDATE `queue_user` SET `queue_status` = :status, `note` = :note WHERE FID_queue = :queue AND FID_user = :user");
-			$status = '';
-			if (clean($_POST['user_result']) == "dismiss") {
-				$status = '0';
-			} elseif (clean($_POST['user_result']) == "accept") {
-				$status = '2';
-			}
-			$sqlSelect->execute(array(
-				'status'      =>   $status,
-				'note'        =>   clean($_POST['description']),   
+
+			// Получение информации по следующим двум студентам в очереди
+
+			$select_last_users = $dbh->prepare("SELECT `FID_user` FROM `queue_user` WHERE FID_queue = :queue AND queue_status = 1 LIMIT 3");
+			$select_last_users->execute(array(
 				'queue'       =>   clean($_POST['queue_id']),   
-				'user'        =>   clean($_POST['user_id'])  
 			));
+
+			$latest_users = $select_last_users->fetchAll(PDO::FETCH_COLUMN);
+
+			$output = array();
+			if (in_array((string)clean($_POST['user_id']), $latest_users)) {
+				$new_array = array_diff($latest_users,array((string)clean($_POST['user_id'])));
+				$output['data'] = array_values($new_array);
+			} else {
+				$output['data'] = '';
+			}
+
+			// Обновление статуса студента в очереди
+			if (clean($_POST['user_result']) == "dismiss") {
+				$update_queue_user = $dbh->prepare("DELETE FROM `queue_user` WHERE FID_queue = :queue AND FID_user = :user");
+				$update_queue_user->execute(array(
+					'queue'       =>   clean($_POST['queue_id']),   
+					'user'        =>   clean($_POST['user_id'])  
+				));
+			} elseif (clean($_POST['user_result']) == "accept") {
+				$update_queue_user = $dbh->prepare("UPDATE `queue_user` SET `queue_status` = 2, `note` = :note WHERE FID_queue = :queue AND FID_user = :user");
+				$update_queue_user->execute(array(
+					'note'        =>   clean($_POST['description']),   
+					'queue'       =>   clean($_POST['queue_id']),   
+					'user'        =>   clean($_POST['user_id'])  
+				));
+			}
+
+			echo json_encode($output);
+
+
 		} else {
 			$err = 1;
 		}
 
-
 	}
 
-	echo $err;
 }
 ?>

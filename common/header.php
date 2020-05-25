@@ -19,11 +19,32 @@
     <script src="<?php echo $home_url; ?>/assets/js/vendor/bootstrap.bundle.min.js"></script>
     <!--подкючаем fancybox-->
     <script type="text/javascript" src="<?php echo $home_url; ?>/assets/js/vendor/fancybox/jquery.fancybox.min.js"></script>
+    <script src="<?php echo $home_url; ?>/assets/js/notification.js"></script>
+    <script src="<?php echo $home_url; ?>/assets/js/web-socket.js"></script>
     <script src="<?php echo $home_url; ?>/assets/js/scripts.js"></script>
 </head>
-<body class="sb-nav-fixed">
+<?php 
+    $current_page = '';
+    switch (preg_replace("/\?.+/", "", $_SERVER['REQUEST_URI'])) {
+        case $queue_list_url:
+           $current_page = 'queues-list';
+            break;
+        case preg_replace("/\?.+/", "", $queue_single_url):
+           $current_page = 'queue-single';
+            break;
+        case $home_url:
+           $current_page = 'home';
+            break;
+        default:
+            break;
+    }
+
+
+?>
+<body class="sb-nav-fixed <?php echo $current_page; ?>" data-queue-id="<?php echo isset($_GET['queue']) ? $_GET['queue'] : ''; ?>">
     <?php require 'common/top-bar.php'; ?>
     <div id="layoutSidenav">
         <?php require 'common/menu.php'; ?>
 
         <div id="layoutSidenav_content">
+

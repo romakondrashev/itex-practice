@@ -11,14 +11,16 @@ $('#add_queue_form').on('submit', function(e){
         },
         success: function (error){
             if (error === '0') {
-               $this.slideUp(function () {
+                $this.slideUp(function () {
                     $this.html('<p class="text-success">Данные успешно сохранены!</p>').slideDown();
+                    websocket_callback('add_queue', $('body').data('queue-id'));
                     setTimeout(()=>location.reload(),2000);
                 });
             } else if (error === '1') {
                 $this.find('#messages').html('<div class="alert alert-danger" role="alert">Пожалуйста, заполните все необходимые поля</div>');
             }
-           $this.find('[type="submit"]').removeAttr('disabled').val('Сохранить');
+            $this.find('[type="submit"]').removeAttr('disabled').val('Сохранить');
+            
         }
     })
 
@@ -46,15 +48,23 @@ $('#edit_user_form').on('submit', function(e){
         type: 'POST',
         url: 'backend/queue-users/change-user-status-by-author.php',
         data: $(this).serialize(),
+        dataType: 'json',
         beforeSend: function(e){
-            $this.attr('disabled','disabled').val('Отправка данных...');
+            $this.find('[type="submit"]').attr('disabled','disabled').val('Отправка данных...');
         },
-        success: function (error){
+        success: function (info){
+
             $this.find('[type="submit"]').removeAttr('disabled').val('Сохранить');
 
             $('#edit_user_modal').find('[data-fancybox-close]').trigger('click');
             $this.trigger('reset');
-            get_queue_users();
+            if(info.data === '')
+                websocket_callback('get_queue_users', $('body').data('queue-id'));
+            else
+                websocket_callback('get_queue_users', $('body').data('queue-id'), info.data.join(','));
+
         }
     })
 })
+
+

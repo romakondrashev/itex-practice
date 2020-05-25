@@ -38,7 +38,7 @@
 			}
 		})
 	}
-	function reload_queue (queue_id){
+	function restore_queue (queue_id){
 		if (confirm('Вы действительно хотите очистить очередь?')) {
 			$.ajax({
 				type: 'POST',
@@ -49,8 +49,9 @@
 				success: function(error){
 					if (error !== '0') {
 						alert('Ошибка!');
-					} 
-					location.reload();
+					} else {
+						websocket_callback('restore_queue', $('body').data('queue-id'));
+					}
 				}
 			})
 		}
@@ -65,9 +66,10 @@
 			success: function(error){
 				if (error == '1') {
 					alert('Ошибка!');
+				} else {
+					websocket_callback('toggle_activation_queue', $('body').data('queue-id'));
 				}
 
-				location.reload();
 			}
 		})
 	}
@@ -82,8 +84,9 @@
 				success: function(error){
 					if (error !== '0') {
 						alert('Ошибка!');
-					} 
-					location.reload();
+					} else {
+						websocket_callback('remove_queue', $('body').data('queue-id'));
+					}
 				}
 			})
 		}

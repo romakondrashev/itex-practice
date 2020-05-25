@@ -1,4 +1,7 @@
 <?php require 'common/header.php'; ?>
+<?php
+$session = mt_rand(1,999);
+?>
 <main>
     <div class="container-fluid">
         <h1 class="mt-4">Главная</h1>
@@ -27,7 +30,7 @@
         <div class="queue_wrapper">
             <div class="mb-3">
                 <h2 class="queue_title ">
-                    <i class="fas fa-user-clock mr-2"></i>Ожидание в очереди
+                    <i class="fas fa-user-clock mr-2"></i>Участие в очереди
                 </h2>
             </div>
             <div class="row">
@@ -40,4 +43,7 @@
         
     </div>
 </main>
+
+
+
 <?php require 'common/footer.php'; ?>

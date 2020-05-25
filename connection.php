@@ -45,4 +45,7 @@ if (!isset($is_auth_page)) {
 	    header("Location: $home_url/login.php?message=need-auth");
 	}
 }
+
+
+
 ?>

@@ -59,7 +59,7 @@ while ($row = $sqlSelect->fetch(PDO::FETCH_ASSOC)) :
                     <button data-fancybox href="#" data-src="#add_queue_modal" title="Отредактировать очередь" class="btn btn-primary" onclick="open_form_edit('<?php echo $row['ID']; ?>');">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button href="#" title="Очистить список ожидающих" class="btn btn-warning" onclick="reload_queue('<?php echo $row['ID']; ?>');">
+                    <button href="#" title="Очистить список ожидающих" class="btn btn-warning" onclick="restore_queue('<?php echo $row['ID']; ?>');">
                         <i class="fas fa-user-slash"></i>
                     </button>
                     <?php if ($row['is_active']==='1'): ?>
