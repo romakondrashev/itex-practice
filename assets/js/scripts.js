@@ -21,6 +21,16 @@
     $("#sidebarToggle").on(function(e) {
     	$("body").toggleClass("sb-sidenav-toggled");
     });
+    // Chat settings
+    $.ajax('./backend/chat/show-condition.php').done(function(data){
+        let chat = $('#floating_chat_wrapper');
+
+        if (parseInt(data) === 1 && chat.html() === '' ) {
+            chat.load('./frontend/chat.php');
+        } else if (parseInt(data) === 0 && chat.html() !== '' ) {
+            chat.html('');
+        }
+    });
 
     
     

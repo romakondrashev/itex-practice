@@ -2,8 +2,8 @@
 <?php require 'frontend/forms/add-queue-modal.php'; ?>
 <!-- Проверка студента в очереди -->
 <?php require 'frontend/forms/edit-user-modal.php'; ?>
-
-
+<!-- Блок вывода чата -->
+<div id="floating_chat_wrapper"></div>
 
 
 <script src="<?php echo $home_url; ?>/assets/js/footer-scripts.js"></script>
@@ -100,7 +100,7 @@
 <footer class="py-4 bg-light mt-auto">
 	<div class="container-fluid">
 		<div class="d-flex align-items-center justify-content-between small">
-			<div class="text-muted">Copyright &copy; online-queue</div>
+			<div class="text-muted">Copyright &copy; Online-Queue 2020</div>
 			<div>
 				<a href="#">Privacy Policy</a>
 				&middot;
@@ -111,6 +111,8 @@
 </footer>
 </div>
 </div>
+
+
 
 </body>
 </html>

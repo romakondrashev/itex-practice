@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 25 2020 г., 09:29
+-- Время создания: Май 26 2020 г., 12:27
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.4.4
 
@@ -43,9 +43,9 @@ CREATE TABLE `queues` (
 --
 
 INSERT INTO `queues` (`ID`, `author_FID`, `title`, `description`, `discipline`, `place`, `date`, `is_active`) VALUES
-(3, 2, 'Практические занятия', 'Сдача ИДЗ по 2-му модулю', 'ИПЗ', '37з', '2020-05-20 21:00:00', 0),
+(3, 2, 'Практические занятия', 'Сдача ИДЗ по 2-му модулю', 'ИПЗ', '37з', '2020-05-20 21:00:00', 1),
 (5, 1, 'Лабораторные работы', 'Проведение Консультации', 'ITEX', '109i', '2020-05-30 21:00:00', 1),
-(6, 1, 'Лабораторные работы', 'выфвфывфыв', 'КСХ', '109i', '2020-05-25 21:00:00', 1);
+(6, 1, 'Лабораторные работы', 'выфвфывфыв', 'КСХ', '109i', '2020-05-25 21:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -67,9 +67,10 @@ CREATE TABLE `queue_user` (
 
 INSERT INTO `queue_user` (`ID`, `FID_queue`, `FID_user`, `queue_status`, `note`) VALUES
 (33, 6, 1, 2, 'fdsfdsf'),
-(34, 5, 1, 1, ''),
-(35, 5, 4, 2, 'sdfdsf'),
-(36, 5, 3, 1, '');
+(76, 5, 1, 1, ''),
+(77, 5, 6, 2, 'ывавыа'),
+(79, 3, 1, 1, ''),
+(81, 3, 6, 1, '');
 
 -- --------------------------------------------------------
 
@@ -94,11 +95,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `login`, `password`, `user_hash`, `user_ip`, `email`, `name`, `curse`, `from_group`) VALUES
-(1, 'test', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '02e3bfba4011fb5cc7ea4c3152a75e8af4de8c73', '::1', 'test@gmail.com', 'Иващенко Г.С.', 0, ''),
+(1, 'test', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '13d30d2b723a71e8d389e3114f19cbcd5c085078', '::1', 'test@gmail.com', 'Иващенко Г.С.', 0, ''),
 (2, 'test2', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '0077bc2193a85d872308a463f0ddc9b35443bfad', '127.0.0.1', 'test2@gmail.com', 'Рожнова Т.Г.', 0, ''),
 (3, 'test3', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '', '', 'test5@gmail.com', 'Ермак Д.О.', 3, 'КИУКИ-17-1'),
-(4, 'romakondrashev', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '', '', 'roman.kondrashev@nure.ua', 'Кондрашев Р.А.', 3, 'КИУКИ-17-1'),
-(6, 'admin', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '2f5b0c39c9c0a5ea5ca7cb006f93a848bcdc0929', '127.0.0.1', '', 'Донченко А.О.', 3, 'КИУКИ-17-1');
+(6, 'admin', '5cec175b165e3d5e62c9e13ce848ef6feac81bff', '810c4bf1a4a38cc21c118a170de804c3ff0e9c43', '127.0.0.1', '', 'Донченко А.О.', 3, 'КИУКИ-17-1'),
+(11, '', '', '0e0c53d955915fa74ceb66c6778319e9df971607', '127.0.0.1', 'roman.kondrashev@nure.ua', 'Кондрашев Р.', 0, ''),
+(12, '', '', '8520cc2b387ca66ab00ba300b2d736d57663ad96', '127.0.0.1', 'romakondrashev@gmail.com', 'Lakost', 0, '');
 
 --
 -- Индексы сохранённых таблиц
@@ -136,13 +138,13 @@ ALTER TABLE `queues`
 -- AUTO_INCREMENT для таблицы `queue_user`
 --
 ALTER TABLE `queue_user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

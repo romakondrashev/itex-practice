@@ -41,8 +41,7 @@ if (in_array($current_user['ID'], $latest_users)) {
 
 /*
 	1. Если пользователя раннеe не было в очереди
-	2. Если пользователь ранее отклонял очередь
-	3. Если пользователь ранее состоял в очереди
+	2. Если пользователь ранее состоял в очереди
 */
 if (empty($user_exist) && $is_active_queue === '1') {
 	$sqlSelect = $dbh->prepare("INSERT INTO `queue_user` (`FID_queue`,`FID_user`) VALUES (?,?)");

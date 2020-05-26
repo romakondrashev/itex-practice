@@ -9,16 +9,14 @@ $sqlSelect->execute(array($_POST['queue']));
 
 $queue_users = array();
 
-
+// Цикл по пользователям текущей очереди
 while ($row = $sqlSelect->fetch(PDO::FETCH_ASSOC)) {
 	$user_type = '';
 	if ($row['queue_status'] === '1') {
 		$user_type = 'awaiting';
 	} elseif($row['queue_status'] === '2') {
 		$user_type = 'success';
-	} elseif($row['queue_status'] === '0') {
-		$user_type = 'abort';
-	}
+	} 
 	$sqlSelect_user = $dbh->query("SELECT `ID`,`curse`,`from_group`,`name` FROM `users` WHERE `ID` = ".$row['FID_user']);
 	$queue_users[$user_type][] = $sqlSelect_user->fetch(PDO::FETCH_ASSOC);
 

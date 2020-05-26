@@ -27,7 +27,7 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Авторизованы как:</div>
-            <?php echo $current_user['login']; ?>
+            <?php echo !empty($current_user['login']) ? $current_user['login'] : $current_user['email']; ?>
         </div>
     </nav>
 </div>
