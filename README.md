@@ -8,4 +8,4 @@ Online-queue (PHP+MySQL)
 - [x] **24.05.2020** - Submit, edit, remove student from queue. Toggle activation of queue was added.
 - [x] **23.05.2020** - New functions like add, clear, remove, save and edit queues.
 - [x] **22.05.2020** - Created basic functions of Web-application. Auth, stand in queue.
-- [x] **21.05.2020** - Created design of Web-application.
+- [x] **21.05.2020** - Created design for Web-application.
