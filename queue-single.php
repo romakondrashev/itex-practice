@@ -28,7 +28,7 @@ $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 ?>
 <main>
 	<div class="container-fluid">
-		<h1 class="mt-4">Очередь на приём работ по <?php echo $row['discipline']; ?></h1>
+		<h1 class="mt-5">Очередь на приём работ по <?php echo $row['discipline']; ?></h1>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item ">
 				<a href="<?php echo $home_url; ?>">
@@ -72,27 +72,7 @@ $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 			</div>
 
 			<div class="row">
-
-				<div class="nav flex-column nav-pills col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Текущие участники</a>
-					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Прошли очередь</a>
-
-				</div>
-				<div class="tab-content col-xl-6 col-md-6 col-sm-12 mx-auto" id="v-pills-tabContent">
-					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-						<h2 class="text-center awaiting-users-title">Список ожидающих</h2>
-
-
-						<div id="awaiting-users-wrapp"><!-- Inserting queue students --></div>
-
-						<div id="queue_button_wrapper" class="queue_button_wrapper text-center"><!-- Inserting toggle button --></div>
-					</div>
-					<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-						<h2 class="text-center awaiting-users-title">Успешно прошли очередь</h2>
-						<div id="success-users-wrapp"><!-- Inserting queue students --></div>
-					</div>
-				</div>
-				<div class="col-xl-4 col-md-6 mx-auto">
+				<div class="col-xl-4 col-md-6 mx-auto order-md-last">
 					<div class="card bg-light text-dark mb-4">
 						<div class="card-body">
 							<div class="card-body-item">
@@ -127,6 +107,26 @@ $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 
 					</div>
 				</div>
+				<div class="nav flex-column nav-pills col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Текущие участники</a>
+					<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Прошли очередь</a>
+
+				</div>
+				<div class="tab-content col-xl-6 col-md-6 col-sm-12 mx-auto" id="v-pills-tabContent">
+					<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+						<h2 class="text-center awaiting-users-title">Список ожидающих</h2>
+
+
+						<div id="awaiting-users-wrapp"><!-- Inserting queue students --></div>
+
+						<div id="queue_button_wrapper" class="queue_button_wrapper text-center"><!-- Inserting toggle button --></div>
+					</div>
+					<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+						<h2 class="text-center awaiting-users-title">Успешно прошли очередь</h2>
+						<div id="success-users-wrapp"><!-- Inserting queue students --></div>
+					</div>
+				</div>
+				
 
 			</div>
 		</div>

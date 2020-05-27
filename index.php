@@ -4,7 +4,7 @@ $session = mt_rand(1,999);
 ?>
 <main>
     <div class="container-fluid">
-        <h1 class="mt-4">Главная</h1>
+        <h1 class="mt-5">Главная</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Главная</li>
         </ol>

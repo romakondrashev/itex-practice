@@ -3,7 +3,7 @@
 
 <main>
 	<div class="container-fluid">
-		<h1 class="mt-4">Список всех очередей</h1>
+		<h1 class="mt-5">Список всех очередей</h1>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item ">
 				<a href="<?php echo $home_url; ?>">
@@ -12,7 +12,7 @@
 			</li>
 			<li class="breadcrumb-item active">Список всех очередей</li>
 		</ol>
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-end mb-2">
 			<a data-fancybox href="javascript:;" data-src="#add_queue_modal" rel="nofollow" class="btn btn-primary modalbox " onclick="clicked_new_queue_button();"><i class="fas fa-plus"></i></a>
 		</div>	
 		<div class="row">

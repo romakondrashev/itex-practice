@@ -22,6 +22,8 @@
      background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192c46 50%, #22254c 75%, #22254c 100%);
      background-repeat: no-repeat;
      background-attachment: fixed;
+     z-index: 9999999
+}
 }
  .floating-chat.enter:hover {
      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
