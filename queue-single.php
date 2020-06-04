@@ -213,7 +213,9 @@ $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 
 					let output = '',
 					is_current_user_done = false,
-					is_current_user_awaiting = false;
+					is_current_user_awaiting = false,
+					is_author_of_queue = <?php echo $author["ID"] === $current_user["ID"] ? 'true' : 'false'; ?>,
+					is_active_queue = <?php echo $row['is_active'] === '1' ? 'true' : 'false'; ?>;
 
 					// awaiting users
 					if (data['awaiting']) {
@@ -243,12 +245,14 @@ $author = $author_sql->fetch(PDO::FETCH_ASSOC);
 					}
 					$('#success-users-wrapp').html(output);
 
-					// Пользователь ожидает в очереди
-					if (!is_current_user_done && is_current_user_awaiting) 
-						$('#queue_button_wrapper').html(get_toggle_queue_button(true));
-					// Пользователя нет в очереди
-					else if (!is_current_user_done && !is_current_user_awaiting && <?php echo $row['is_active'] === '1' ? 'true' : 'false'; ?> )
-					$('#queue_button_wrapper').html(get_toggle_queue_button());
+					if (!is_author_of_queue) {
+						// Пользователь ожидает в очереди
+						if (!is_current_user_done && is_current_user_awaiting) 
+							$('#queue_button_wrapper').html(get_toggle_queue_button(true));
+						// Пользователя нет в очереди
+						else if (!is_current_user_done && !is_current_user_awaiting && is_active_queue)
+							$('#queue_button_wrapper').html(get_toggle_queue_button());
+					}
 
 
 				}
